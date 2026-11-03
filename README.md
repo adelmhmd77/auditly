@@ -1,46 +1,62 @@
 # Auditly
 
-**Open-source technical SEO crawler and auditor** — a modern desktop app for Windows, macOS and Linux, plus a
-command line for CI/CD. Crawl a site, get 125+ checks with severity, affected URLs and how to fix each one, then
-export to CSV, Excel, JSON, HTML/PDF or an AI-ready prompt — or ask Claude about your crawl directly.
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Open Source](https://img.shields.io/badge/open%20source-yes-brightgreen.svg)](https://github.com/adelmhmd77/auditly)
+[![Release](https://img.shields.io/github/v/release/adelmhmd77/auditly)](https://github.com/adelmhmd77/auditly/releases)
+
+**Open-source technical SEO crawler and auditor.** A modern desktop app for Windows, macOS and Linux, plus a
+command line for CI/CD. Crawl a site, get 126 checks with severity, affected URLs and how to fix each one, then
+export to CSV, Excel, JSON, HTML/PDF or an AI-ready prompt, or ask Claude about your crawl directly.
 
 Light and dark themes · English and Arabic (right-to-left) interface · exports go to your **Downloads/Auditly**
 folder by default, or any folder you choose.
 
+Auditly is **free and open source**, released under the [MIT License](LICENSE). You can use, modify and
+distribute it, including commercially. Contributions are welcome.
+
 ---
 
-## Get the app
+## Downloads
 
-### Windows (.exe)
+| Version | Date | Windows | macOS | Linux | Source |
+|---------|------|---------|-------|-------|--------|
+| **v1.0.0** (latest) | 2026-11-03 | [Auditly-Windows.zip](https://github.com/adelmhmd77/auditly/releases/download/v1.0.0/Auditly-Windows.zip) | [Auditly-macOS.zip](https://github.com/adelmhmd77/auditly/releases/download/v1.0.0/Auditly-macOS.zip) | [Auditly-Linux.tar.gz](https://github.com/adelmhmd77/auditly/releases/download/v1.0.0/Auditly-Linux.tar.gz) | [zip](https://github.com/adelmhmd77/auditly/archive/refs/tags/v1.0.0.zip) / [tar.gz](https://github.com/adelmhmd77/auditly/archive/refs/tags/v1.0.0.tar.gz) |
 
-* **Download** `Auditly.exe` from the project's GitHub Actions / Releases page and double-click it. No Python needed.
-* **Or build it yourself:** install [Python 3.10+](https://www.python.org/downloads/) (tick *“Add python.exe to PATH”*),
-  then double-click **`build-windows.bat`**. The app appears in `dist\Auditly.exe`.
-* **Or run from source:** double-click **`run-windows.bat`**.
+All releases: https://github.com/adelmhmd77/auditly/releases
 
-### Linux — install as an app
+## Install
+
+> The apps are **not code-signed**, so your system will warn you the first time you open Auditly.
+
+| Platform | Install | First launch |
+|----------|---------|--------------|
+| **Windows** | Download `Auditly-Windows.zip`, extract it and run `Auditly.exe`. No Python needed. | SmartScreen warning: click **More info → Run anyway**. |
+| **macOS** | Download `Auditly-macOS.zip`, extract it and move `Auditly.app` to Applications. | Right-click the app → **Open → Open**. |
+| **Linux** | Download `Auditly-Linux.tar.gz`, unpack it and run `./install-linux.sh`. | Auditly appears in your app menu with its icon. |
+
+### Linux: install as an app
 
 ```bash
+tar -xzf Auditly-Linux.tar.gz
 ./install-linux.sh            # builds if needed, then adds Auditly to your app menu with its icon
 ./install-linux.sh --uninstall
 ```
 
-### macOS and Linux (Python)
+### Run from source or build it yourself
 
-```bash
-./run-linux-mac.sh
-```
+| Platform | Run from source | Build a standalone app |
+|----------|-----------------|------------------------|
+| Windows | Double-click **`run-windows.bat`** | Install [Python 3.10+](https://www.python.org/downloads/) (tick *"Add python.exe to PATH"*), then double-click **`build-windows.bat`** → `dist\Auditly.exe` |
+| macOS / Linux | `./run-linux-mac.sh` | `python3 build.py` → `dist/Auditly` (Linux) or `dist/Auditly.app` (macOS) |
 
 The first run creates a private `.venv` and installs everything; later runs start straight away.
 Fedora: `sudo dnf install python3` · Ubuntu/Debian: `sudo apt install python3 python3-venv` ·
 macOS: Python from python.org or `brew install python`.
 
-To build a standalone app instead: `python3 build.py` → `dist/Auditly` (Linux) or `dist/Auditly.app` (macOS).
-
 ### Build all three automatically
 
 Push the project to GitHub and run the **Build apps** workflow (Actions tab), or push a tag like `v1.0.0`.
-It produces `Auditly.exe`, `Auditly-macOS.zip` and the Linux `Auditly` binary as downloadable artifacts.
+It produces `Auditly-Windows.zip`, `Auditly-macOS.zip` and `Auditly-Linux.tar.gz` for the Releases page.
 (PyInstaller can only build for the system it runs on, which is why the workflow uses Windows, macOS and Linux runners.)
 
 ---
@@ -56,20 +72,22 @@ It produces `Auditly.exe`, `Auditly-macOS.zip` and the Linux `Auditly` binary as
 3. Watch pages appear live. **Pause**, **Resume** or **Stop** at any time; every crawl is saved and an interrupted
    crawl (even after a crash) can be resumed from **History**.
 4. When it finishes:
-   * **Dashboard** — health score, critical/warning/opportunity counts, top issues, status codes, site checks
+   * **Dashboard**: health score, critical/warning/opportunity counts, top issues, status codes, site checks
      (SSL, robots.txt, sitemap, llms.txt, AI crawler access) and issues by category.
-   * **Pages** — every URL with search, filter chips, column picker and a detail panel (issues, inlinks, outlinks).
-   * **Issues** — issue → why it matters → how to fix → affected URLs (copy or export).
-   * **Site structure** — URL tree, click-depth chart and strongest pages by internal link score.
-   * **AI assistant** — Claude-powered tasks and *Chat with your crawl* (see below).
-   * **Compare crawls** — before/after: fixed findings, new findings, new/removed URLs, status changes.
-   * **Exports** — choose formats and folder.
-   * **Integrations** — PageSpeed Insights (Core Web Vitals) and IndexNow.
+   * **Pages**: every URL with search, filter chips, column picker and a detail panel (issues, inlinks, outlinks).
+   * **Issues**: issue → why it matters → how to fix → affected URLs (copy or export).
+   * **Site structure**: URL tree, click-depth chart and strongest pages by internal link score.
+   * **AI assistant**: Claude-powered tasks and *Chat with your crawl* (see below).
+   * **Compare crawls**: before/after: fixed findings, new findings, new/removed URLs, status changes.
+   * **Exports**: choose formats and folder.
+   * **Integrations**: PageSpeed Insights (Core Web Vitals) and IndexNow.
+
+**Keyboard shortcuts:** `Ctrl+L` focuses the URL bar, `Ctrl+E` opens Exports.
 
 ### Where files go
 
 Exports are saved to **`Downloads/Auditly/<site> <date>/`**. Change the folder in **Exports** or **Settings**, or tick
-*“Ask where to save every time”*. Crawl databases live in the app data folder
+*"Ask where to save every time"*. Crawl databases live in the app data folder
 (`%APPDATA%\Auditly`, `~/Library/Application Support/Auditly`, `~/.local/share/Auditly`).
 
 | Export | What you get |
@@ -81,11 +99,20 @@ Exports are saved to **`Downloads/Auditly/<site> <date>/`**. Change the folder i
 | HTML / PDF report | Client-ready report; white-label it with your name, colour and logo in Settings |
 | AI prompt (.md) | A ready-to-paste analysis prompt + all findings and URLs, in English or Arabic |
 
+### Data extracted per page
+
+Status, response time, TTFB, size, redirect target, click depth · title (length and pixel width), meta description,
+H1–H6, canonical, meta robots / X-Robots-Tag, indexability · lang, hreflang, viewport, rel=next/prev · word count,
+text ratio, Flesch readability, content hash and SimHash, keyword density · structured data (JSON-LD validated,
+Microdata, RDFa) · author and dates · images (alt, width/height, lazy loading) · scripts, stylesheets,
+render-blocking resources · security headers, mixed content, insecure forms, compression, caching headers ·
+custom extraction with CSS selector, XPath or Regex (extra table columns).
+
 ### AI features (Claude)
 
 Add your Anthropic API key in **Settings → AI** (or set `ANTHROPIC_API_KEY`). Default model: `claude-opus-5-5`.
 
-* **Chat with your crawl** — ask “which pages lost internal links?” or “list 404s and who links to them”.
+* **Chat with your crawl**: ask "which pages lost internal links?" or "list 404s and who links to them".
   Claude answers by running read-only SQL against the crawl database (writes are blocked).
 * Executive summary · prioritised task list (impact × affected URLs ÷ effort) · title & meta rewrites ·
   internal linking suggestions · search intent per URL · topic clusters · semantic cannibalisation check ·
@@ -97,6 +124,8 @@ Nothing is sent to Claude until you run a task or ask a question.
 ---
 
 ## Checks (126 built in)
+
+Each check is marked **Critical**, **Warning** or **Opportunity**, with why it matters and how to fix it.
 
 | Category | Examples |
 |---|---|
@@ -154,7 +183,7 @@ docker run --rm -v "$PWD/reports:/reports" auditly crawl https://example.com -o 
 
 * **Plugins:** drop a `.py` file into the plugins folder (Settings → *Open plugins folder*). See
   [`plugins/_example_plugin.py`](plugins/_example_plugin.py) and [CONTRIBUTING.md](CONTRIBUTING.md).
-* **Profiles:** reusable YAML crawl settings — see [`profiles/example.yaml`](profiles/example.yaml).
+* **Profiles:** reusable YAML crawl settings. See [`profiles/example.yaml`](profiles/example.yaml).
 
 ## Not included yet (roadmap)
 
@@ -163,7 +192,17 @@ Google Search Console, GA4, Bing Webmaster Tools, CrUX history, Google Indexing 
 an interactive link-graph view, tap-target analysis (needs a rendered layout), built-in scheduling inside the app,
 and Arabic translations of the individual audit names (the interface itself is translated).
 
+## Contributing
+
+Auditly is open source and contributions are welcome: bug reports, new audits, plugins, translations and pull
+requests. Read [CONTRIBUTING.md](CONTRIBUTING.md) to get started, or open an
+[issue](https://github.com/adelmhmd77/auditly/issues).
+
 ## Responsible use
 
 Only crawl sites you own or have permission to audit. Auditly respects robots.txt by default; keep the delay and
 thread count reasonable on shared hosting.
+
+## License
+
+Auditly is open-source software released under the [MIT License](LICENSE).
