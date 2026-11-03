@@ -1,0 +1,27 @@
+# Example Auditly crawl profile. Load it in the app (Crawl settings → Load profile…)
+# or on the command line:  auditly crawl --profile profiles/example.yaml
+url: https://example.com
+mode: spider            # spider | list | sitemap | single
+threads: 8
+delay: 0.2
+max_urls: 5000          # 0 = unlimited
+max_depth: 0
+respect_robots: true
+use_sitemaps: true
+subdomains: false
+check_external: true
+check_images: true
+mobile_parity: false
+render_js: false
+user_agent: Googlebot (smartphone)   # a preset name or any custom string
+include: []
+exclude:
+  - \?(sort|filter)=
+  - /wp-admin/
+strip_params: [utm_source, utm_medium, utm_campaign, gclid, fbclid]
+cookies: ""
+headers: {}
+extractions:
+  - {name: price, kind: css, expr: ".price", attr: ""}
+  - {name: author, kind: xpath, expr: "//meta[@name='author']/@content", attr: ""}
+  - {name: gtm_id, kind: regex, expr: "GTM-[A-Z0-9]+", attr: ""}

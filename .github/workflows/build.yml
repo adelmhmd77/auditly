@@ -1,0 +1,71 @@
+# Builds Auditly for Windows (.exe), macOS (.app) and Linux.
+# Push a tag like v1.0.0 → the apps are built and attached to a GitHub Release automatically.
+# You can also run it manually from the Actions tab (results appear under the run's "Artifacts").
+name: Build apps
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-22.04]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install Linux Qt runtime libraries
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libegl1 libxkbcommon-x11-0 libxcb-cursor0 libxcb-icccm4 libxcb-keysyms1 libxcb-shape0
+      - name: Build
+        run: python build.py
+      - name: Package (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: Compress-Archive -Path dist/Auditly.exe -DestinationPath dist/Auditly-Windows.zip
+      - name: Package (macOS)
+        if: runner.os == 'macOS'
+        run: cd dist && ditto -c -k --keepParent Auditly.app Auditly-macOS.zip
+      - name: Package (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          mkdir -p pkg/Auditly
+          cp dist/Auditly pkg/Auditly/Auditly
+          cp auditly/assets/auditly.png pkg/Auditly/auditly.png
+          cp install-linux.sh README.md pkg/Auditly/
+          mkdir -p pkg/Auditly/dist pkg/Auditly/auditly/assets
+          mv pkg/Auditly/Auditly pkg/Auditly/dist/Auditly
+          mv pkg/Auditly/auditly.png pkg/Auditly/auditly/assets/auditly.png
+          tar -czf dist/Auditly-Linux.tar.gz -C pkg Auditly
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Auditly-${{ runner.os }}
+          path: |
+            dist/Auditly-Windows.zip
+            dist/Auditly-macOS.zip
+            dist/Auditly-Linux.tar.gz
+          if-no-files-found: ignore
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/')
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: out
+          merge-multiple: true
+      - uses: softprops/action-gh-release@v2
+        with:
+          name: Auditly ${{ github.ref_name }}
+          generate_release_notes: true
+          files: out/*
