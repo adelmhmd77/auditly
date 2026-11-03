@@ -65,7 +65,7 @@ def main() -> None:
     args.append("run_auditly.py")
     subprocess.check_call(args)
     out = {"win32": "dist/Auditly.exe", "darwin": "dist/Auditly.app"}.get(sys.platform, "dist/Auditly")
-    print(f"\nDone → {ROOT / out}")
+    print(f"\nDone: {ROOT / out}")
 
 
 if __name__ == "__main__":

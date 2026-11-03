@@ -168,6 +168,11 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
+    for stream in (sys.stdout, sys.stderr):  # never crash on characters the console can't show (Windows)
+        try:
+            stream.reconfigure(errors="replace")
+        except (AttributeError, ValueError):
+            pass
     ap = build_parser()
     a = ap.parse_args(argv)
     if not getattr(a, "func", None):
